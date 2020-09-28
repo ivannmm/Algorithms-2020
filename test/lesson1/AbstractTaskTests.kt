@@ -53,6 +53,8 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             assertFileContent(
                 "temp.txt",
                 """
+                    Ади 2 - Белкин Мия
+                    Ади 11 - Евсеев Арина
                     Железнодорожная 3 - Петров Иван
                     Железнодорожная 7 - Иванов Алексей, Иванов Михаил
                     Садовая 5 - Сидоров Петр, Сидорова Мария

@@ -42,33 +42,34 @@ public class JavaTasks {
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
     static public void sortTimes(String inputName, String outputName) throws Exception {
-        BufferedReader reader = new BufferedReader(new FileReader(inputName));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputName));
+            BufferedReader reader = new BufferedReader(new FileReader(inputName))){
+            List<String> time = new ArrayList<>();
 
-        List<String> time = new ArrayList<>();
-
-        String line;
-        while ((line = reader.readLine()) != null) {
-            time.add(line);
-        }
-
-        time.sort(new Comparator<>() {
-            final DateFormat date = new SimpleDateFormat("hh:mm:ss a");
-            @Override
-            public int compare(String o1, String o2) {
-                try {
-                    return date.parse(o1).compareTo(date.parse(o2));
-                } catch (ParseException e) {
-                    throw new IllegalArgumentException();
-                }
+            String line;
+            while ((line = reader.readLine()) != null) {
+                time.add(line);
             }
-        });
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(outputName));
+            time.sort(new Comparator<>() {
+                final DateFormat date = new SimpleDateFormat("hh:mm:ss a");
 
-        for (String date : time) {
-            writer.write(date + '\n');
+                @Override
+                public int compare(String o1, String o2) {
+                    try {
+                        return date.parse(o1).compareTo(date.parse(o2));
+                    } catch (ParseException e) {
+                        throw new IllegalArgumentException();
+                    }
+                }
+            });
+
+
+
+            for (String date : time) {
+                writer.write(date + '\n');
+            }
         }
-        writer.close();
     }
 
     /**ортировка адресов
@@ -98,57 +99,54 @@ public class JavaTasks {
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
     static public void sortAddresses(String inputName, String outputName) throws Exception {
+        try (
         BufferedReader reader =
                 new BufferedReader(new InputStreamReader(new FileInputStream(inputName), StandardCharsets.UTF_8));
-        Map<String, ArrayList<String>> address = new TreeMap<>((o1,o2) ->{
-            String streetName1 = o1.split(" ")[0];
-            String streetName2 = o2.split(" ")[0];
-            Integer houseNumber1 = Integer.parseInt(o1.split(" ")[1]);
-            Integer houseNumber2 = Integer.parseInt(o2.split(" ")[1]);
-            if (!streetName1.equals(streetName2))
-                return streetName1.compareTo(streetName2);
-            else return houseNumber1.compareTo(houseNumber2);
-        });
-
-        String line;
-
-        while ((line = reader.readLine()) != null) {
-            if (!line.matches("^([\\wА-Яа-яЁё]+ ){2}- ([\\wА-Яа-яЁё\\-]+ \\d+)$"))
-                throw new IllegalArgumentException();
-            String[] data = line.split(" ");
-            String street = data[3] + " " + data[4];
-            String name = data[0] + " " + data[1];
-
-            if (!address.containsKey(street)) {
-                ArrayList<String> names = new ArrayList<>();
-                names.add(name);
-                address.put(street, names);
-            }
-            else {
-                address.get(street).add(name);
-            }
-        }
-
         BufferedWriter writer =
-                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputName), StandardCharsets.UTF_8));
+                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputName), StandardCharsets.UTF_8))) {
+            Map<String, ArrayList<String>> address = new TreeMap<>((o1, o2) -> {
+                String streetName1 = o1.split(" ")[0];
+                String streetName2 = o2.split(" ")[0];
+                Integer houseNumber1 = Integer.parseInt(o1.split(" ")[1]);
+                Integer houseNumber2 = Integer.parseInt(o2.split(" ")[1]);
+                if (!streetName1.equals(streetName2))
+                    return streetName1.compareTo(streetName2);
+                else return houseNumber1.compareTo(houseNumber2);
+            });
 
-        for (String key : address.keySet()) {
-            Collections.sort(address.get(key));
-            StringBuilder sb = new StringBuilder();
-            sb.append(key);
-            sb.append(" - ");
-            List<String> list = address.get(key);
-            for (int i = 0; i < list.size(); i++) {
-                sb.append(list.get(i));
-                if (i != list.size() - 1)
-                    sb.append(", ");
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                if (!line.matches("^([\\wА-Яа-яЁё]+ ){2}- ([\\wА-Яа-яЁё\\-]+ \\d+)$"))
+                    throw new IllegalArgumentException();
+                String[] data = line.split(" ");
+                String street = data[3] + " " + data[4];
+                String name = data[0] + " " + data[1];
+
+                if (!address.containsKey(street)) {
+                    ArrayList<String> names = new ArrayList<>();
+                    names.add(name);
+                    address.put(street, names);
+                } else {
+                    address.get(street).add(name);
+                }
             }
-            sb.append('\n');
-            writer.write(String.valueOf(sb));
+
+            for (String key : address.keySet()) {
+                Collections.sort(address.get(key));
+                StringBuilder sb = new StringBuilder();
+                sb.append(key);
+                sb.append(" - ");
+                List<String> list = address.get(key);
+                for (int i = 0; i < list.size(); i++) {
+                    sb.append(list.get(i));
+                    if (i != list.size() - 1)
+                        sb.append(", ");
+                }
+                sb.append('\n');
+                writer.write(String.valueOf(sb));
+            }
         }
-
-        writer.close();
-
     }
 
     /**

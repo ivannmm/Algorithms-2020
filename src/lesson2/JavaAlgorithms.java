@@ -117,6 +117,8 @@ public class JavaAlgorithms {
         if (limit < 5) return 2;
         int forFind = 5;
         int count = 2;
+
+        /**Учитываем то, что все простые числы находятся около 6n +/- 1 */
         while (forFind <= limit){
             if (isPrime(forFind))
                 count++;

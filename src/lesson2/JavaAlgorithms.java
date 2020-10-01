@@ -112,6 +112,31 @@ public class JavaAlgorithms {
      * Единица простым числом не считается.
      */
     static public int calcPrimesNumber(int limit) {
-        throw new NotImplementedError();
+        if (limit <= 1 ) return 0;
+        if (limit == 2) return 1;
+        if (limit < 5) return 2;
+        int forFind = 5;
+        int count = 2;
+        while (forFind <= limit){
+            if (isPrime(forFind))
+                count++;
+            forFind = forFind + 2;
+            if (forFind <= limit && isPrime(forFind))
+                count++;
+            forFind = forFind + 4;
+        }
+        return count;
     }
+
+    static boolean isPrime(int n) {
+        if (n < 2) return false;
+        if (n == 2) return true;
+        if (n % 2 == 0) return false;
+        for (int m = 3; m <= (int) Math.sqrt(n); m++) {
+            if (n % m == 0) return false;
+        }
+        return true;
+    }
+
+
 }

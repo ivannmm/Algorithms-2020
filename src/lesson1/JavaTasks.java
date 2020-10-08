@@ -40,6 +40,8 @@ public class JavaTasks {
      * 07:56:14 PM
      *
      * В случае обнаружения неверного формата файла бросить любое исключение.
+     * Ресурсоемкость = O(n)
+     * Трудоемкость = O(n*log(n))
      */
     static public void sortTimes(String inputName, String outputName) throws Exception {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputName));
@@ -97,6 +99,8 @@ public class JavaTasks {
      * Садовая 5 - Сидоров Петр, Сидорова Мария
      *
      * В случае обнаружения неверного формата файла бросить любое исключение.
+     * Ресурсоемкость = O(n)
+     * Трудоемкость = O(n*log(n))
      */
     static public void sortAddresses(String inputName, String outputName) throws Exception {
         try (
@@ -115,20 +119,21 @@ public class JavaTasks {
             });
 
             String line;
-
             while ((line = reader.readLine()) != null) {
-                if (!line.matches("^([\\wА-Яа-яЁё]+ ){2}- ([\\wА-Яа-яЁё\\-]+ \\d+)$"))
-                    throw new IllegalArgumentException();
-                String[] data = line.split(" ");
-                String street = data[3] + " " + data[4];
-                String name = data[0] + " " + data[1];
+                if (line.matches("^([\\wА-Яа-яЁё]+ ){2}- ([\\wА-Яа-яЁё\\-]+ \\d+)$")) {
+                    String[] data = line.split(" ");
+                    String street = data[3] + " " + data[4];
+                    String name = data[0] + " " + data[1];
 
-                if (!address.containsKey(street)) {
-                    ArrayList<String> names = new ArrayList<>();
-                    names.add(name);
-                    address.put(street, names);
+                    if (!address.containsKey(street)) {
+                        ArrayList<String> names = new ArrayList<>();
+                        names.add(name);
+                        address.put(street, names);
+                    } else {
+                        address.get(street).add(name);
+                    }
                 } else {
-                    address.get(street).add(name);
+                    throw new IllegalArgumentException();
                 }
             }
 

@@ -3,6 +3,10 @@ package lesson2;
 import kotlin.NotImplementedError;
 import kotlin.Pair;
 
+import java.util.stream.IntStream;
+
+import static java.util.stream.IntStream.*;
+
 @SuppressWarnings("unused")
 public class JavaAlgorithms {
     /**
@@ -96,14 +100,16 @@ public class JavaAlgorithms {
      * При сравнении подстрок, регистр символов *имеет* значение.
      * Если имеется несколько самых длинных общих подстрок одной длины,
      * вернуть ту из них, которая встречается раньше в строке first.
+     * Ресурсоемкость = O(~n^2)
+     * Трудоемкость = O(~n^2)
      */
     static public String longestCommonSubstring(String first, String second) {
         int[][] mat = new int[first.length() + 1][second.length() + 1];
         int maxLength = 0;
         int endPointInFirstWord = 0;
         String result;
-        for (int i = 1; i < first.length() + 1; i++){
-            for (int j = 1; j < second.length() + 1; j++) {
+        for (int i = 1; i < first.length() + 1; i++)
+            for (int j = 1; j < second.length() + 1; j++)
                 if (first.charAt(i - 1) == second.charAt(j - 1)) {
                     mat[i][j] = mat[i - 1][j - 1] + 1;
                     if (mat[i][j] > maxLength) {
@@ -111,8 +117,6 @@ public class JavaAlgorithms {
                         maxLength = mat[i][j];
                     }
                 }
-            }
-        }
         if (maxLength == 0) {
             return "";
         } else return first.substring(endPointInFirstWord - maxLength, endPointInFirstWord);
@@ -127,15 +131,31 @@ public class JavaAlgorithms {
      *
      * Справка: простым считается число, которое делится нацело только на 1 и на себя.
      * Единица простым числом не считается.
+     * Ресурсоемкость = O(n)
+     * Трудоемкость = O(n*log(log(n)))
      */
     static public int calcPrimesNumber(int limit) {
+        if (limit <= 1) return 0;
+        boolean[] numbers = new boolean[limit + 1];
+        rangeClosed(2, limit).forEach(i -> numbers[i] = true);
+        int count = 0;
+        for (int i = 2; i <= limit; i++) {
+            if (numbers[i]) {
+                for (int j = 2; i * j <= limit; j++) {
+                    numbers[i * j] = false;
+                }
+                count++;
+            }
+        }
+        return count;
+    }/**
         if (limit <= 1 ) return 0;
         if (limit == 2) return 1;
         if (limit < 5) return 2;
         int forFind = 5;
         int count = 2;
 
-        /**Учитываем то, что все простые числы находятся около 6n +/- 1 */
+        /**Учитываем то, что все простые числы находятся около 6n +/- 1
         while (forFind <= limit){
             if (isPrime(forFind))
                 count++;
@@ -155,7 +175,7 @@ public class JavaAlgorithms {
             if (n % m == 0) return false;
         }
         return true;
-    }
+    }*/
 
 
 }

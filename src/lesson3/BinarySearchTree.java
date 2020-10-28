@@ -12,7 +12,6 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         final T value;
         Node<T> left = null;
         Node<T> right = null;
-
         Node(T value) {
             this.value = value;
         }
@@ -101,8 +100,15 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
      */
     @Override
     public boolean remove(Object o) {
-        // TODO
-        throw new NotImplementedError();
+        T t = (T) o;
+        if (!contains(t))
+            return false;
+        Node<T> closest = find(t);
+        if (closest.left == null && closest.right == null) {
+            closest = new Node<>(null);
+            return true;
+        }
+        return false;
     }
 
     @Nullable

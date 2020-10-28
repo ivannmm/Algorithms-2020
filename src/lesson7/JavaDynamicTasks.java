@@ -2,6 +2,12 @@ package lesson7;
 
 import kotlin.NotImplementedError;
 
+import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -59,9 +65,46 @@ public class JavaDynamicTasks {
      * Здесь ответ 2 + 3 + 4 + 1 + 2 = 12
      */
     public static int shortestPathOnField(String inputName) {
-        throw new NotImplementedError();
+        List<ArrayList<Integer>> field = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputName))) {
+            String line;
+            int lineNumber = 0;
+            while ((line = reader.readLine()) != null) {
+                ArrayList<Integer> arr = new ArrayList<>();
+                field.add(lineNumber,arr);
+                for (int i = 0; i < line.length(); i = i + 2) {
+                    field.get(lineNumber).add(Character.getNumericValue(line.charAt(i)));
+                }
+                lineNumber++;
+            }
+        } catch (IOException ignored) {};
+        int[][] newField = new int[field.size()][field.get(0).size()];
+        int z = 0;
+        for (int i = 0; i < field.size(); i++)
+            for (int j = 0; j < field.get(0).size(); j++) {
+                newField[i][j] = minimalNeighbor(newField, i, j) + field.get(i).get(j);
+            }
+        return newField[field.size() - 1][field.get(0).size() - 1];
     }
 
+    static int minimalNeighbor (int[][] field, int i, int j){
+        if (i == 0 && j == 0) return 0;
+        if (i == 0) {
+            return field[i][j - 1];
+        }
+        if (j == 0) {
+            return field[i-1][j];
+        }
+        return minOf(field[i][j - 1], field[i-1][j], field[i-1][j-1]);
+    }
+
+    static int minOf(int a, int b, int c) {
+        if (a < b && a < c)
+            return a;
+        if (c < b && c < a)
+            return c;
+        return b;
+    }
     // Задачу "Максимальное независимое множество вершин в графе без циклов"
     // смотрите в уроке 5
 }

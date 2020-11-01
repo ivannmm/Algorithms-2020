@@ -39,20 +39,40 @@ public class JavaDynamicTasks {
     public static List<Integer> longestIncreasingSubSequence(List<Integer> list) {
         Integer[] ln = new Integer[list.size()];
         List<Integer> length = new ArrayList<>(Arrays.asList(ln));
-        Collections.fill(length, 0);
+        List<Integer> ancestors = new ArrayList<>(Arrays.asList(ln));
+        Collections.fill(length, 1);
         int max;
+        int ancestor;
         int needNumber = 0;
         for (int i = 0; i < list.size(); i++) {
             max = -1;
-            for (int j = 0; j < i - 1; j++) {
+            for (int j = 0; j < i; j++) {
                 if (length.get(j) > max && list.get(j) < list.get(i)) {
-                    max = length.get(i);
+                    max = length.get(j);
                     needNumber = j;
                 }
+            }
+            if (max != -1)
+                ancestors.set(i, needNumber);
                 length.set(i, length.get(needNumber) + 1);
+        }
+        List<Integer> result = new ArrayList<>();
+        int counter = 0;
+        max = -1;
+        int posOfMax = -1;
+        for (int i = 0; i < length.size(); i++) {
+            if (length.get(i) > max) {
+                max = length.get(i);
+                posOfMax = i;
             }
         }
-        return length;
+        ancestor = posOfMax;
+        for (int i = ancestors.get(posOfMax); i >= 0; i--){
+            result.add(0,list.get(ancestor));
+            if (ancestors.get(ancestor) != null)
+                ancestor = ancestors.get(ancestor);
+        }
+        return result;
     }
 
     /**
@@ -74,6 +94,8 @@ public class JavaDynamicTasks {
      * Необходимо найти маршрут с минимальным весом и вернуть этот минимальный вес.
      *
      * Здесь ответ 2 + 3 + 4 + 1 + 2 = 12
+     * Ресурсоемкость = O(n^2)
+     * Трудоемкость = O(n^2)
      */
     public static int shortestPathOnField(String inputName) {
         List<ArrayList<Integer>> field = new ArrayList<>();

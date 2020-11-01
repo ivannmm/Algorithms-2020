@@ -120,7 +120,7 @@ public class JavaTasks {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.matches("^([\\wА-Яа-яЁё]+ ){2}- ([\\wА-Яа-яЁё\\-]+ \\d+)$")) {
+                if (line.matches("^([А-Яа-яЁёA-Za-z\\w]+ ){2}- ([А-Яа-яЁёA-Za-z\\w\\-]+ \\d+)$")) {
                     String[] data = line.split(" ");
                     String street = data[3] + " " + data[4];
                     String name = data[0] + " " + data[1];

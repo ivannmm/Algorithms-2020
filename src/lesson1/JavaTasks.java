@@ -183,10 +183,35 @@ public class JavaTasks {
      * 24.7
      * 99.5
      * 121.3
+     * Трудоемкость = O(n*logn)
+     * Ресурсоемкость = O(n)
      */
-    static public void sortTemperatures(String inputName, String outputName) {
-        throw new NotImplementedError();
+    static public void sortTemperatures(String inputName, String outputName) throws Exception {
+        //пока не приходят мысли в голову, как решить эту задачу оптимальнее, ибо кол-во показателей температур может
+        //достигать ста миллионов
+        try (BufferedReader reader =
+                     new BufferedReader(new InputStreamReader(new FileInputStream(inputName), StandardCharsets.UTF_8));
+             BufferedWriter writer =
+                     new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputName), StandardCharsets.UTF_8))) {
+            String line;
+            List<Double> temp = new ArrayList<>();
+            while ((line = reader.readLine()) != null) {
+                temp.add(Double.parseDouble(line));
+            }
+
+            Collections.sort(temp);
+
+            for (Double l : temp) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(l);
+                sb.append('\n');
+                writer.write(String.valueOf(sb));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
+
 
     /**
      * Сортировка последовательности

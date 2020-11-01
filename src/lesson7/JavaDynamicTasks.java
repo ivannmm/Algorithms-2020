@@ -3,12 +3,7 @@ package lesson7;
 import kotlin.NotImplementedError;
 
 import java.io.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public class JavaDynamicTasks {
@@ -39,9 +34,25 @@ public class JavaDynamicTasks {
      * Если самых длинных возрастающих подпоследовательностей несколько (как в примере),
      * то вернуть ту, в которой числа расположены раньше (приоритет имеют первые числа).
      * В примере ответами являются 2, 8, 9, 12 или 2, 5, 9, 12 -- выбираем первую из них.
+     * @return
      */
     public static List<Integer> longestIncreasingSubSequence(List<Integer> list) {
-        throw new NotImplementedError();
+        Integer[] ln = new Integer[list.size()];
+        List<Integer> length = new ArrayList<>(Arrays.asList(ln));
+        Collections.fill(length, 0);
+        int max;
+        int needNumber = 0;
+        for (int i = 0; i < list.size(); i++) {
+            max = -1;
+            for (int j = 0; j < i - 1; j++) {
+                if (length.get(j) > max && list.get(j) < list.get(i)) {
+                    max = length.get(i);
+                    needNumber = j;
+                }
+                length.set(i, length.get(needNumber) + 1);
+            }
+        }
+        return length;
     }
 
     /**

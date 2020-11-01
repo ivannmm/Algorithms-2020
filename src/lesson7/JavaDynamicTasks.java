@@ -35,8 +35,12 @@ public class JavaDynamicTasks {
      * то вернуть ту, в которой числа расположены раньше (приоритет имеют первые числа).
      * В примере ответами являются 2, 8, 9, 12 или 2, 5, 9, 12 -- выбираем первую из них.
      * @return
+     * Трудоемкость = O(n^2)
+     * Ресурсоемкость = O(n)
      */
     public static List<Integer> longestIncreasingSubSequence(List<Integer> list) {
+        if (list.size() == 0)
+            return list;
         Integer[] ln = new Integer[list.size()];
         List<Integer> length = new ArrayList<>(Arrays.asList(ln));
         List<Integer> ancestors = new ArrayList<>(Arrays.asList(ln));
@@ -53,11 +57,9 @@ public class JavaDynamicTasks {
                 }
             }
             if (max != -1)
-                ancestors.set(i, needNumber);
                 length.set(i, length.get(needNumber) + 1);
         }
         List<Integer> result = new ArrayList<>();
-        int counter = 0;
         max = -1;
         int posOfMax = -1;
         for (int i = 0; i < length.size(); i++) {
@@ -67,10 +69,13 @@ public class JavaDynamicTasks {
             }
         }
         result.add(list.get(posOfMax));
-        ancestor = ancestors.get(posOfMax);
-        while (ancestors.get(ancestor) != null){
-            result.add(0,list.get(ancestor));
-            ancestor = ancestors.get(ancestor);
+        for (int i = max; i >= 0; i--) {
+            for (int j = 0; j < posOfMax; j++)
+                if (length.get(j) == max - 1 && list.get(j) < list.get(posOfMax)) {
+                    result.add(0, list.get(j));
+                    posOfMax = j;
+                    max = length.get(j);
+                }
         }
         return result;
     }

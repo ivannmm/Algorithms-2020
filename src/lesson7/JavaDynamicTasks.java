@@ -66,11 +66,11 @@ public class JavaDynamicTasks {
                 posOfMax = i;
             }
         }
-        ancestor = posOfMax;
-        for (int i = ancestors.get(posOfMax); i >= 0; i--){
+        result.add(list.get(posOfMax));
+        ancestor = ancestors.get(posOfMax);
+        while (ancestors.get(ancestor) != null){
             result.add(0,list.get(ancestor));
-            if (ancestors.get(ancestor) != null)
-                ancestor = ancestors.get(ancestor);
+            ancestor = ancestors.get(ancestor);
         }
         return result;
     }

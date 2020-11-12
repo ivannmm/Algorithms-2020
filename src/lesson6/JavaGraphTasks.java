@@ -2,6 +2,7 @@ package lesson6;
 
 import kotlin.NotImplementedError;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -34,7 +35,40 @@ public class JavaGraphTasks {
      * связного графа ровно по одному разу
      */
     public static List<Graph.Edge> findEulerLoop(Graph graph) {
-        throw new NotImplementedError();
+        List<Graph.Edge> result = new ArrayList<>();
+        int count = 0;
+        Graph.Vertex startingPoint = null;
+        Set<Graph.Edge> setOfEdges = graph.getEdges();
+        if (setOfEdges.size() <= 2)
+            return result;
+        for (Graph.Edge element : setOfEdges) {
+            if (graph.getNeighbors(element.getBegin()).size() % 2 == 1) {
+                count++;
+                if (count > 2)
+                    return result;
+                startingPoint = element.getBegin();
+            }
+            if (startingPoint == null)
+                startingPoint = element.getBegin();
+        }
+        Graph.Vertex currentPoint = startingPoint;
+        int c = setOfEdges.size();
+        for (int i = 0; i < c; i++) {
+            Set<Graph.Vertex> points = graph.getNeighbors(currentPoint);
+            setOfEdges.remove(currentPoint);
+            if (!setOfEdges.isEmpty())
+                for (Graph.Vertex element : points) {
+                    if (element != startingPoint) {
+                        result.add(graph.getConnection(currentPoint, element));
+                        currentPoint = element;
+                        break;
+                    }
+                }
+            if (setOfEdges.size() == 1)
+                result.add(graph.getConnection(currentPoint, startingPoint));
+        }
+
+        return result;
     }
 
     /**

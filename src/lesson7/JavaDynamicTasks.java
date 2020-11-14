@@ -43,10 +43,8 @@ public class JavaDynamicTasks {
             return list;
         Integer[] ln = new Integer[list.size()];
         List<Integer> length = new ArrayList<>(Arrays.asList(ln));
-        List<Integer> ancestors = new ArrayList<>(Arrays.asList(ln));
         Collections.fill(length, 1);
         int max;
-        int ancestor;
         int needNumber = 0;
         for (int i = 0; i < list.size(); i++) {
             max = -1;

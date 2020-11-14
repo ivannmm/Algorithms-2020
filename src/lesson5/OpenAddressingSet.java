@@ -95,9 +95,26 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
      */
     @Override
     public boolean remove(Object o) {
-        return super.remove(o);
+        if (!contains(o))
+            return false;
+        int index = startingIndex(o);
+        Object current = storage[index];
+        while (current != null){
+            if (current.equals(o)) {
+                storage[index] = null;
+                size--;
+                shift(index);
+            }
+            index = (index + 1) % capacity;
+            current = storage[index];
+        }
+        return true;
     }
 
+    void shift (int index) {
+        if (capacity - 1 - index >= 0) System.arraycopy(storage, index + 1, storage, index, capacity - 1 - index);
+        storage[capacity - 1] = null;
+    }
     /**
      * Создание итератора для обхода таблицы
      *

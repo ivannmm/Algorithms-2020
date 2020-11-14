@@ -67,7 +67,6 @@ public class JavaGraphTasks {
             if (setOfEdges.size() == 1)
                 result.add(graph.getConnection(currentPoint, startingPoint));
         }
-
         return result;
     }
 

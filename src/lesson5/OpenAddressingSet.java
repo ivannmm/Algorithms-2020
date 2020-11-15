@@ -93,7 +93,7 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
      *
      * Средняя
      */
-    Object DEL;
+    Object DEL = new Object();
     @Override
     public boolean remove(Object o) {
         if (!contains(o))
@@ -121,12 +121,12 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
     private class OASIterator implements Iterator<T> {
 
         private int currentNumber = 0;
-        private int countElements = 0;
+        private int countFind = 0;
         private Object element = null;
 
         @Override
         public boolean hasNext() {
-            return countElements < size;
+            return countFind < size;
         }
 
         @Override
@@ -137,7 +137,7 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
                 currentNumber++;
             }
             element = storage[currentNumber];
-            countElements++;
+            countFind++;
             currentNumber++;
             return (T) element;
         }
@@ -148,7 +148,8 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
                 throw new IllegalStateException();
             storage[currentNumber - 1] = DEL;
             size--;
-            countElements--;
+            countFind--;
         }
     }
 }
+

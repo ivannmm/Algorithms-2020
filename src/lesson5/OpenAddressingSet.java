@@ -93,22 +93,12 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
      *
      * Средняя
      */
-    Object DEL = new Object();
+    Object DEL;
     @Override
     public boolean remove(Object o) {
         if (!contains(o))
             return false;
-        int index = startingIndex(o);
-        Object current = storage[index];
-        while (current != null){
-            if (current.equals(o)) {
-                storage[index] = DEL;
-                break;
-            }
-            index = (index + 1) % capacity;
-            current = storage[index];
-        }
-        size--;
+        removeIf(next -> next.equals(o));
         return true;
     }
     /**
@@ -156,7 +146,7 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
         public void remove() {
             if (element == null)
                 throw new IllegalStateException();
-            storage[currentNumber -1] = DEL;
+            storage[currentNumber - 1] = DEL;
             size--;
             countElements--;
         }

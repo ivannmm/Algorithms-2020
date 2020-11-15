@@ -109,6 +109,7 @@ abstract class AbstractOpenAddressingSetTest {
             while (openAddressingSetIter.hasNext()) {
                 controlSet.remove(openAddressingSetIter.next())
             }
+            println(controlSet.toString())
             assertTrue(
                 controlSet.isEmpty(),
                 "OpenAddressingSetIterator doesn't traverse the entire set."

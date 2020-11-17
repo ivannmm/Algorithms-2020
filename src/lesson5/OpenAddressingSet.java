@@ -92,13 +92,23 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
      * Спецификация: {@link Set#remove(Object)} (Ctrl+Click по remove)
      *
      * Средняя
+     *
+     * Трудоемкость:
+     * в лучшем случае = O(1)
+     * в худшем случае = O(n)
+     * Ресурсоемкость = O(1)
      */
     Object DEL = new Object();
     @Override
     public boolean remove(Object o) {
         if (!contains(o))
             return false;
-        removeIf(next -> next.equals(o));
+        Iterator<T> it = iterator();
+        while (it.hasNext())
+            if (it.next().equals(o)) {
+                it.remove();
+                break;
+            }
         return true;
     }
     /**

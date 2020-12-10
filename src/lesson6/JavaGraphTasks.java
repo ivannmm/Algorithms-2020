@@ -115,7 +115,10 @@ public class JavaGraphTasks {
             builder.addVertex(vertex.getName());
             noVisit.remove(vertex);
             for (Graph.Vertex neighbor : graph.getNeighbors(vertex)){
-                if (noVisit.contains(neighbor) || graph.getConnections(vertex).size() == 1) {
+                //добавил сравнение на то, чтобы текущая вершина не совпада с соседом, потому как это
+                //теоритически может быть
+                if ((noVisit.contains(neighbor) || graph.getConnections(vertex).size() == 1)
+                && !vertex.equals(neighbor)) {
                     builder.addVertex(neighbor.getName());
                     builder.addConnection(vertex, neighbor);
                     noVisit.remove(neighbor);

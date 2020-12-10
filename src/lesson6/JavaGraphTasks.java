@@ -103,7 +103,7 @@ public class JavaGraphTasks {
      * |
      * J ------------ K
      * Ресурсоемкость = о(n)
-     * Трудоемкость = о(logn)
+     * Трудоемкость = о(~logn)
      */
     public static Graph minimumSpanningTree(Graph graph) {
         Set<Graph.Vertex> noVisit = new HashSet<>(graph.getVertices());
@@ -122,6 +122,7 @@ public class JavaGraphTasks {
                 }
             }
         }
+
         return builder.build();
     }
 

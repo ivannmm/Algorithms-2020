@@ -99,17 +99,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
      * Средняя
      */
     @Override
-    public boolean remove(Object o) {
-        T t = (T) o;
-        if (!contains(t))
-            return false;
-        Node<T> closest = find(t);
-        if (closest.left == null && closest.right == null) {
-            closest = new Node<>(null);
-            return true;
-        }
-        return false;
-    }
+    public boolean remove(Object o) {return false;}
 
     @Nullable
     @Override

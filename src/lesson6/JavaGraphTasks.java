@@ -1,8 +1,10 @@
 package lesson6;
 
 import kotlin.NotImplementedError;
+import lesson6.impl.GraphBuilder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,6 +35,9 @@ public class JavaGraphTasks {
      *
      * Справка: Эйлеров цикл -- это цикл, проходящий через все рёбра
      * связного графа ровно по одному разу
+     * Ресурсоемкость = о(n+m);
+     * Трудоемкость = о(n*m)
+     * n - кол-во дуг, m - кол-во вершин
      */
     public static List<Graph.Edge> findEulerLoop(Graph graph) {
         List<Graph.Edge> result = new ArrayList<>();
@@ -97,9 +102,27 @@ public class JavaGraphTasks {
      * E    F    I
      * |
      * J ------------ K
+     * Ресурсоемкость = о(n)
+     * Трудоемкость = о(logn)
      */
     public static Graph minimumSpanningTree(Graph graph) {
-        throw new NotImplementedError();
+        Set<Graph.Vertex> noVisit = new HashSet<>(graph.getVertices());
+        GraphBuilder builder = new GraphBuilder();
+
+        for (Graph.Vertex vertex : graph.getVertices()){
+            if (noVisit.isEmpty())
+                break;
+            builder.addVertex(vertex.getName());
+            noVisit.remove(vertex);
+            for (Graph.Vertex neighbor : graph.getNeighbors(vertex)){
+                if (noVisit.contains(neighbor) || graph.getConnections(vertex).size() == 1) {
+                    builder.addVertex(neighbor.getName());
+                    builder.addConnection(vertex, neighbor);
+                    noVisit.remove(neighbor);
+                }
+            }
+        }
+        return builder.build();
     }
 
     /**
@@ -129,9 +152,8 @@ public class JavaGraphTasks {
      * Эта задача может быть зачтена за пятый и шестой урок одновременно
      */
     public static Set<Graph.Vertex> largestIndependentVertexSet(Graph graph) {
-        throw new NotImplementedError();
+        return null;
     }
-
     /**
      * Наидлиннейший простой путь.
      * Сложная
